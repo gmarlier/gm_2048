@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <table>
+
+        <tr>
+            <table>
+                {% for row in grid %}
+                <tr>
+                    {% for cell in row %}
+                    <td
+                        style="width:50px; height:50px; background-color:rgb(206, 168, 137); text-align:center; color:white;">
+                        {% if cell %}
+                        {{ cell }}
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <table>
+                <tr>
+                    <td></td>
+                    <td>
+                        <form action="UP" method="post">
+                            <button type="submit"
+                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">↑</button>
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form action="LEFT" method="post">
+                            <button type="submit"
+                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">←</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="AI" method="post">
+                            <button type="submit"
+                                style="width:40px; height:40px; background-color:rgb(250, 150, 50); color:white;">AI</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="RIGHT" method="post">
+                            <button type="submit"
+                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">→</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <form action="DOWN" method="post">
+                            <button type="submit"
+                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">↓</button>
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <table>
+                        <h1>{{ message }}</h1>
+                    </table>
+                </tr>
+            </table>
+        </tr>
+    </table>
+</body>
+
+</html>
