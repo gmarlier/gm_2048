@@ -1,18 +1,30 @@
 import logging
 from unittest import TestCase, main
-from grid import cannot_change, empty_tiles, transpose_matrix, flip_matrix, left_move, right_move, down_move, up_move
+from grid import (
+    cannot_change,
+    empty_tiles,
+    transpose_matrix,
+    flip_matrix,
+    left_move,
+    right_move,
+    down_move,
+    up_move,
+)
+
 
 class GridMoveTestCase(TestCase):
 
     def setUp(self):
-        logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s")
-    
+        logging.basicConfig(
+            level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s"
+        )
+
     def test_edge_cases(self):
-        
+
         cases = [
             ([[2]], [[2]]),
-            ([[2,4]], [[2],[4]]),
-            ([[None, None]], [[None],[None]]),
+            ([[2, 4]], [[2], [4]]),
+            ([[None, None]], [[None], [None]]),
         ]
         for value, expected in cases:
             with self.subTest(value):
@@ -27,10 +39,10 @@ class GridMoveTestCase(TestCase):
         ]
 
         expected_grid = [
-            [1,     None,    5],
-            [None,  3,    None],
-            [2,     None,    6],
-            [None,  4,    None],
+            [1, None, 5],
+            [None, 3, None],
+            [2, None, 6],
+            [None, 4, None],
         ]
         self.assertEqual(expected_grid, transpose_matrix(initial_grid))
 
@@ -44,7 +56,7 @@ class GridMoveTestCase(TestCase):
 
         expected_grid = [
             [None, 2, None, 1],
-            [4   , None,3, None],
+            [4, None, 3, None],
             [None, 6, None, 5],
         ]
         self.assertEqual(expected_grid, flip_matrix(initial_grid))
@@ -85,18 +97,17 @@ class GridMoveTestCase(TestCase):
         self.assertEqual((expected_grid, True), right_move(initial_grid))
 
         initial_grid = [
-                [2 ,     2,       2],
-                [2 ,    1024,   512],
-                [64,    64,     128],
-            ]
-        
-        expected_grid = [
-                [None ,     2,       4],
-                [2,    1024,   512],
-                [None,    128,     128],
-            ]
-        self.assertEqual((expected_grid, True), right_move(initial_grid))
+            [2, 2, 2],
+            [2, 1024, 512],
+            [64, 64, 128],
+        ]
 
+        expected_grid = [
+            [None, 2, 4],
+            [2, 1024, 512],
+            [None, 128, 128],
+        ]
+        self.assertEqual((expected_grid, True), right_move(initial_grid))
 
     def test_down_move(self):
 
@@ -111,27 +122,15 @@ class GridMoveTestCase(TestCase):
             [None, None, None, None],
             [None, None, None, None],
             [None, None, None, None],
-            [4   , 4,    4,       4],
+            [4, 4, 4, 4],
         ]
         self.assertEqual((expected_grid, True), down_move(initial_grid))
 
     def test_down_move(self):
 
-        initial_grid = [
-            [2],
-            [2],
-            [4],
-            [4],
-            [4]
-        ]
+        initial_grid = [[2], [2], [4], [4], [4]]
 
-        expected_grid = [
-            [None],
-            [None],
-            [4],
-            [4],
-            [8]
-        ]
+        expected_grid = [[None], [None], [4], [4], [8]]
         self.assertEqual((expected_grid, True), down_move(initial_grid))
 
     def test_up_move(self):
@@ -144,7 +143,7 @@ class GridMoveTestCase(TestCase):
         ]
 
         expected_grid = [
-            [4   , 4,    4,       4],
+            [4, 4, 4, 4],
             [None, None, None, None],
             [None, None, None, None],
             [None, None, None, None],
@@ -196,13 +195,13 @@ class GridMoveTestCase(TestCase):
 
     def test_empty_tiles(self):
         initial_grid = [
-            [2, None, 2   ],
+            [2, None, 2],
             [None, 2, None],
-            [2, None, 2   ],
+            [2, None, 2],
             [None, 2, None],
         ]
 
-        expected_tiles = [(0,1),(1,0),(1,2),(2,1),(3,0),(3,2)]
+        expected_tiles = [(0, 1), (1, 0), (1, 2), (2, 1), (3, 0), (3, 2)]
         self.assertEqual(expected_tiles, empty_tiles(initial_grid))
 
     def test_change(self):
@@ -221,6 +220,7 @@ class GridMoveTestCase(TestCase):
             [None, 2, None, 2],
         ]
         self.assertEqual(initial_grid, expected_grid)
-        
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()

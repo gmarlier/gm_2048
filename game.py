@@ -6,6 +6,7 @@ from ai import AbstractAI, Expectimax
 from grid import (
     down_move,
     empty_tiles,
+    fitness_snake,
     left_move,
     move_generator,
     random_grid,
@@ -105,8 +106,9 @@ def game_init(
         depth,
         move_generator,
         spawn_generator,
-        dead_end_function=game_over,
-        fitness=sum_square,
+        endgame_condition=game_over,
+        # fitness=sum_square,
+        fitness=fitness_snake,
     )
 
     return grid, ai_model

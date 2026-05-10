@@ -11,12 +11,14 @@ app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
+TEMPLATE_NAME = "ui.html"
+
 
 @app.get("/NEW", response_class=HTMLResponse, include_in_schema=False)
 def new_game(request: Request, row=5, col=5, init=2, depth=3):
 
     app.state.grid, app.state.ai = game_init(int(row), int(col), int(init), int(depth))
-    return templates.TemplateResponse(request, "grid.html", {"grid": app.state.grid})
+    return templates.TemplateResponse(request, TEMPLATE_NAME, {"grid": app.state.grid})
 
 
 @app.post("/{button}", response_class=HTMLResponse)
@@ -25,7 +27,7 @@ async def move(request: Request, button: str):
         Action[button], app.state.grid, app.state.ai
     )
     return templates.TemplateResponse(
-        request, "grid.html", {"grid": app.state.grid, "message": app.state.message}
+        request, TEMPLATE_NAME, {"grid": app.state.grid, "message": app.state.message}
     )
 
 

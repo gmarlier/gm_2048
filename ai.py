@@ -40,7 +40,7 @@ class AbstractAI:
         self.max_depth = max_depth
         self.move_generator = move_generator
         self.spawn_generator = spawn_generator
-        self.dead_end_function = dead_end_function
+        self.endgame_condition = dead_end_function
         self.fitness = fitness
 
     @abstractmethod
@@ -53,49 +53,45 @@ class AbstractAI:
         board,
         move_generator,
         spawn_generator,
-        dead_end_function: Callable,
+        endgame_condition: Callable,
         fitness: Callable,
     ) -> Action:
         raise NotImplementedError
 
     def search(self, board, depth, is_player):
 
-        if depth == 0 or (is_player and self.dead_end_function(board)):
-            return self.fitness(board)
+        indent = " " * ((self.max_depth - depth) * 3)
+        if depth == 0 or (is_player and self.endgame_condition(board)):
+            score = self.fitness(board)
+            logging.debug(f"{indent} depth={depth} score={score}")
+            return score
 
         score = self.fitness(board)
 
         # if player, select a player iterator, otherwise, select empty-tiles iterator
         if is_player:
+            scores = []
             for child_board, action in self.move_generator(board):
-                indent = " " * ((self.max_depth - depth) * 3)
-                logging.debug(
-                    f"{indent} depth={depth-1} calculate score after player move {action}"
-                )
+                logging.debug(f"{indent} depth={depth} action={action}")
                 child_score = self.search(child_board, depth - 1, False)
-                logging.debug(
-                    f"{indent} depth={depth-1} score={child_score} action={action}"
-                )
-                score = max(score, child_score)
+                scores.append(child_score)
+            if scores:
+                score = max(scores)
 
         else:
             scores = []
             accumulated_score = 0
             for index, (child_board, proba) in enumerate(self.spawn_generator(board)):
-                indent = " " * ((self.max_depth - depth) * 3)
-                logging.debug(
-                    f"{indent} depth={depth-1} calculate score after random spawn={index}"
-                )
+                logging.debug(f"{indent} depth={depth} action=random")
                 child_score = self.search(child_board, depth - 1, True)
                 accumulated_score += proba * child_score
-                logging.debug(f"{indent} depth={depth-1} score={child_score}\n")
+                # logging.debug(f"{indent} depth={depth-1} score={child_score}\n")
                 scores.append(child_score)
             if scores:
                 score = sum(scores) / len(scores)
-                logging.debug(
-                    f"{indent} depth={depth-1} average score expectancy={score}\n"
-                )
+                # logging.debug(f"depth={depth-1} average score expectancy={score}\n")
 
+        logging.debug(f"{indent} depth={depth} best score={score}")
         return score
 
 
@@ -106,11 +102,11 @@ class Expectimax(AbstractAI):
         max_depth,
         move_generator,
         spawn_generator,
-        dead_end_function: Callable,
+        endgame_condition: Callable,
         fitness: Callable,
     ):
         super().__init__(
-            max_depth, move_generator, spawn_generator, dead_end_function, fitness
+            max_depth, move_generator, spawn_generator, endgame_condition, fitness
         )
 
     def score_actions(self, board) -> dict[Action, float]:
@@ -123,7 +119,7 @@ class Expectimax(AbstractAI):
     def best_move(self, board) -> Action:
 
         best_score = -math.inf
-        best_action = Action.UP
+        best_action = None
         for action, score in self.score_actions(board).items():
             logging.debug(f"best move score={score} action={action}")
             if score > best_score:

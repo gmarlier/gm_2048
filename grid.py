@@ -337,6 +337,8 @@ def move_generator(board: list[list[int]]):
     }
     for action in actions.keys():
         tmp_board, _ = actions[action](board)
+        if tmp_board == board:
+            continue
         yield tmp_board, action
 
 
@@ -378,7 +380,7 @@ def sum_square(grid: list[list[int]]) -> int:
     return sum(sum(val * val for val in row if val) for row in grid)
 
 
-def fitness_snake_like_pattern(grid: list[list[int]]) -> int:
+def fitness_snake(grid: list[list[int]]) -> int:
     """another fitness function using "snake line pattern" (http://tinyurl.com/l9bstk6)
 
     Args:
@@ -392,12 +394,20 @@ def fitness_snake_like_pattern(grid: list[list[int]]) -> int:
     if cannot_change(grid):
         return -float("inf")
 
+    grid_temp = deepcopy(grid)
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            if grid_temp[row][col] is None:
+                grid_temp[row][col] = 0
+
     snake = []
-    for i, col in enumerate(zip(*grid)):
+    for i, col in enumerate(zip(*grid_temp)):
         snake.extend(reversed(col) if i % 2 == 0 else col)
 
     m = max(snake)
 
     return sum(x / 10**n for n, x in enumerate(snake)) - math.pow(
-        (grid[len(grid) - 1][0] != m) * abs(grid[len(grid) - 1][0] - m), 2
+        (grid_temp[len(grid_temp) - 1][0] != m)
+        * abs(grid_temp[len(grid_temp) - 1][0] - m),
+        2,
     )

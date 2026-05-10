@@ -13,10 +13,6 @@ ERROR_KEYPRESSED = "Key pressed not accepted !"
 
 if __name__ == "__main__":
 
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
-    )
-
     # Configure board size in command line
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -35,7 +31,19 @@ if __name__ == "__main__":
         default=3,
         help="maximum depth of best move search, default is 5",
     )
+    parser.add_argument(
+        "--debug",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="INFO",
+        help="Set the debug level (default: INFO)",
+    )
+
     args = parser.parse_args()
+
+    # Configure logging based on the chosen level
+    logging.basicConfig(level=getattr(logging, args.debug))
+    logging.debug("Debugging enabled")
+    logging.info("Starting program...")
 
     grid, ai_model = game_init(args.rows, args.cols, args.init, args.depth)
 
