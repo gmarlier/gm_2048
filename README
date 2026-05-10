@@ -8,6 +8,16 @@ Install 2048 game:
 clone the remote repository on your local machine:
 git clone https://github.com/gmarlier/gm_2048.git
 
+Optional: create a virtual environment and activate it
+python -m venv .venv
+
+# Activate it (Linux/macOS)
+source .venv/bin/activate
+
+source .venv/bin/activate
+# Activate it (Windows PowerShell)
+.\.venv\Scripts\activate
+
 install python dependencies by running this command in the gm_2048 folder:
 pip install -r requirements
 
