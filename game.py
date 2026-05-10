@@ -1,60 +1,163 @@
+import logging
+from copy import deepcopy
+from random import choice
+
 from ai import AbstractAI, Expectimax
-from grid import down_move, empty_tiles, left_move, move_generator, random_grid, right_move, spawn_generator, sum_square, up_move
-from grid import add_random_tile, grid_contains, cannot_change
-from grid import Action, MESSAGE_WIN, MESSAGE_LOSE
+from grid import (
+    down_move,
+    empty_tiles,
+    left_move,
+    move_generator,
+    random_grid,
+    right_move,
+    spawn_generator,
+    sum_square,
+    up_move,
+)
+from grid import grid_contains, cannot_change
+from grid import Action
 
-def game_win(grid: list[list[int]]):
-    '''
-        players wins when the board contains the default value 2048
-    '''
-    return grid_contains(grid, value=2048)
+MESSAGE_WIN = "You win !"
+MESSAGE_LOSE = "You lose !"
+ERROR_GAME_CONTROLLER = "Error in game controller"
 
-def game_lose(grid):
-    return cannot_change(grid)
 
-def game_over(grid):
-    return game_win(grid) or game_lose(grid)
+def player_win(grid: list[list[int]], value=2048) -> bool:
+    """the player wins if there is at least one value 2048 in the board
 
-def game_init(rows: int, cols: int, init: int, depth: int):
+    Args:
+        grid: data structure of the game state
 
-    grid = random_grid(rows, cols , init)
-    
+    Returns:
+        True if the player wins, False otherwise
+    """
+    return grid_contains(grid, value)
+
+
+def player_lose(grid: list[list[int]], value=2048) -> bool:
+    """The player loses if no 2048 tile exists and no further moves are possible
+
+    Args:
+        grid: current game state
+
+    Returns:
+        True if the player loses, False otherwise
+    """
+    # logging.info(f"player_lose {grid_contains(grid, value)} {cannot_change(grid)}")
+    return grid_contains(grid, value) is False and cannot_change(grid)
+
+
+def game_over(grid: list[list[int]]) -> bool:
+    """the game is over if the player wins or lose
+
+    Args:
+        grid: current game board
+
+    Returns:
+        True if the current game is over, False otherwise
+    """
+    return player_win(grid) or player_lose(grid)
+
+
+def random_tile(tiles: list[tuple[int, int]]):
+    return choice(tiles)
+
+
+def random_value(values: list[int]):
+    return choice(values)
+
+
+def game_with_random_tile(
+    grid: list[list[int]], authorized_values: list[int] = [2, 4]
+) -> list[list[int]]:
+    """
+    insert a new value in the grid
+    """
+    new_grid = deepcopy(grid)
+    if tiles := empty_tiles(grid):
+        logging.debug(f"empty tile={tiles}")
+        row, col = random_tile(tiles)
+        new_grid[row][col] = random_value(authorized_values)
+        logging.debug(f"random value={new_grid[row][col]} added here {(row, col)}")
+    else:
+        logging.warning(f"no random tile can be added")
+    return new_grid
+
+
+def game_init(
+    rows: int, cols: int, init: int, depth: int
+) -> tuple[list[list[int]], dict[Action:callable], AbstractAI]:
+    """initialize game with few parameters: board size, random initial number
+        or maximum depth of ai search
+
+    Args:
+        rows: number of rows of game board
+        cols: number of columns of game board
+        init: number used to initialize a random board
+
+    Returns:
+        True if the current game is over, False otherwise
+    """
+    grid = random_grid(rows, cols, init)
+
     # Instantiate ai model
-    ai_model = Expectimax(depth, move_generator, spawn_generator, game_over=game_over, fitness=sum_square)
+    ai_model = Expectimax(
+        depth,
+        move_generator,
+        spawn_generator,
+        dead_end_function=game_over,
+        fitness=sum_square,
+    )
 
-     # Configure game actions
-    controllers = {
-         Action.UP : up_move,
-         Action.DOWN : down_move,
-         Action.RIGHT: right_move,
-         Action.LEFT: left_move,
-    }
-
-    return grid, controllers, ai_model
+    return grid, ai_model
 
 
-def game_controller(action: str, grid: list[list[int]], controllers, ai_model: AbstractAI):
-    
-    message = ''
+def game_controller(
+    action: str, grid: list[list[int]], ai_model: AbstractAI = None
+) -> tuple[list[list[int]], str]:
+    """
+    this method defines the game workflow
 
-    # User requesting AI Suggestion
-    if action == Action.AI:
-        best_move = ai_model.best_move(grid)
-        return grid, best_move
-    
-    # Trigger end user move
-    grid, _  = controllers[action](grid)
-    
-    # Next action user could spawn a 2048
-    if game_win(grid):
-        return grid, MESSAGE_WIN
-    
-    # Otherwise, check if a tile can be spawn
-    if len(empty_tiles(grid)) > 0:
-        grid = add_random_tile(grid, authorized_values=[2, 4])
-    
-    # should be checked after spawning a new tile
-    if game_lose(grid):
-        return grid, MESSAGE_LOSE
-    
-    return grid, message
+    Args:
+        action: user action identifier
+        grid: current board
+        ai_model: ai algo to select the best move
+
+    Returns:
+        a tuple with the new board state and eventual message
+    """
+    try:
+        message = ""
+
+        # User requesting AI Suggestion
+        if action == Action.AI and ai_model:
+            best_move = ai_model.best_move(grid)
+            return grid, best_move
+
+        # action = ai_model.best_move(grid)
+
+        # Trigger end user move
+        controllers = {
+            Action.UP: up_move,
+            Action.DOWN: down_move,
+            Action.RIGHT: right_move,
+            Action.LEFT: left_move,
+        }
+
+        grid, _ = controllers[action](grid)
+
+        # Next action user could spawn a 2048
+        if player_win(grid):
+            return grid, MESSAGE_WIN
+
+        # Otherwise, check if a tile can be spawn
+        grid = game_with_random_tile(grid)
+
+        # should be checked after spawning a new tile
+        if player_lose(grid) is True:
+            return grid, MESSAGE_LOSE
+
+        return grid, message
+
+    except KeyError as exception:
+        logging.error(ERROR_GAME_CONTROLLER, exception)

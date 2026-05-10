@@ -1,73 +1,107 @@
 <!DOCTYPE html>
 <html>
 
-<body>
-    <table>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* centre horizontalement */
+            justify-content: center;
+            /* centre verticalement */
+            height: 100vh;
+            /* prend toute la hauteur */
+            margin: 0;
+        }
 
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            /* espace entre la grille/pad et le message */
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .message {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Grille -->
+    <table>
+        {% for row in grid %}
         <tr>
-            <table>
-                {% for row in grid %}
-                <tr>
-                    {% for cell in row %}
-                    <td
-                        style="width:50px; height:50px; background-color:rgb(206, 168, 137); text-align:center; color:white;">
-                        {% if cell %}
-                        {{ cell }}
-                        {% endif %}
-                    </td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-            <table>
-                <tr>
-                    <td></td>
-                    <td>
-                        <form action="UP" method="post">
-                            <button type="submit"
-                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">↑</button>
-                        </form>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <form action="LEFT" method="post">
-                            <button type="submit"
-                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">←</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="AI" method="post">
-                            <button type="submit"
-                                style="width:40px; height:40px; background-color:rgb(250, 150, 50); color:white;">AI</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="RIGHT" method="post">
-                            <button type="submit"
-                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">→</button>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <form action="DOWN" method="post">
-                            <button type="submit"
-                                style="width:40px; height:40px; background-color:rgb(200, 150, 50); color:white;">↓</button>
-                        </form>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <table>
-                        <h1>{{ message }}</h1>
-                    </table>
-                </tr>
-            </table>
+            {% for cell in row %}
+            <td style="width:50px; height:50px; background-color:{% if cell %}rgb(186, 148, 117){% else %}rgb(206, 168, 137){% endif %}; 
+             text-align:center; color:black;">
+                {% if cell %}
+                {{ cell }}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Pad directionnel -->
+    <table>
+        <tr>
+            <td></td>
+            <td>
+                <form action="UP" method="post">
+                    <button type="submit"
+                        style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">↑</button>
+                </form>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <form action="LEFT" method="post">
+                    <button type="submit"
+                        style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">←</button>
+                </form>
+            </td>
+            <td>
+                <form action="AI" method="post">
+                    <button type="submit"
+                        style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">AI</button>
+                </form>
+            </td>
+            <td>
+                <form action="RIGHT" method="post">
+                    <button type="submit"
+                        style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">→</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <form action="DOWN" method="post">
+                    <button type="submit"
+                        style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">↓</button>
+                </form>
+            </td>
+            <td></td>
         </tr>
     </table>
+
+    <!-- Message centré -->
+    <div class="message">
+        <h3>
+            {% if message %}
+            {{ message }}
+            {% else %}
+            {{ "_" }}
+            {% endif %}
+        </h3>
+    </div>
 </body>
 
 </html>

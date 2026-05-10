@@ -1,6 +1,6 @@
 import logging
 from unittest import TestCase, main
-from grid import transpose_matrix, flip_matrix, left_move, right_move, down_move, up_move
+from grid import cannot_change, empty_tiles, transpose_matrix, flip_matrix, left_move, right_move, down_move, up_move
 
 class GridMoveTestCase(TestCase):
 
@@ -17,8 +17,6 @@ class GridMoveTestCase(TestCase):
         for value, expected in cases:
             with self.subTest(value):
                 self.assertEqual(expected, transpose_matrix(value))
-
-
 
     def test_transpose_matrix(self):
 
@@ -86,6 +84,20 @@ class GridMoveTestCase(TestCase):
         ]
         self.assertEqual((expected_grid, True), right_move(initial_grid))
 
+        initial_grid = [
+                [2 ,     2,       2],
+                [2 ,    1024,   512],
+                [64,    64,     128],
+            ]
+        
+        expected_grid = [
+                [None ,     2,       4],
+                [2,    1024,   512],
+                [None,    128,     128],
+            ]
+        self.assertEqual((expected_grid, True), right_move(initial_grid))
+
+
     def test_down_move(self):
 
         initial_grid = [
@@ -100,6 +112,25 @@ class GridMoveTestCase(TestCase):
             [None, None, None, None],
             [None, None, None, None],
             [4   , 4,    4,       4],
+        ]
+        self.assertEqual((expected_grid, True), down_move(initial_grid))
+
+    def test_down_move(self):
+
+        initial_grid = [
+            [2],
+            [2],
+            [4],
+            [4],
+            [4]
+        ]
+
+        expected_grid = [
+            [None],
+            [None],
+            [4],
+            [4],
+            [8]
         ]
         self.assertEqual((expected_grid, True), down_move(initial_grid))
 
@@ -137,5 +168,59 @@ class GridMoveTestCase(TestCase):
         ]
         self.assertTrue(initial_grid == expected_grid)
 
+    def test_cannot_change(self):
+
+        blocked = [
+            [2, 4, 2, 4],
+            [4, 2, 4, 2],
+            [2, 4, 2, 4],
+            [4, 2, 4, 2],
+        ]
+        self.assertTrue(cannot_change(blocked))
+
+        not_blocked = [
+            [2, 4, 2, 4],
+            [4, 2, 2, 2],
+            [2, 4, 2, 4],
+            [4, 2, 4, 2],
+        ]
+        self.assertFalse(cannot_change(not_blocked))
+
+        not_blocked = [
+            [2, 4, 2, 4],
+            [4, 2, None, 2],
+            [2, 4, 2, 4],
+            [4, 2, 4, 2],
+        ]
+        self.assertFalse(cannot_change(not_blocked))
+
+    def test_empty_tiles(self):
+        initial_grid = [
+            [2, None, 2   ],
+            [None, 2, None],
+            [2, None, 2   ],
+            [None, 2, None],
+        ]
+
+        expected_tiles = [(0,1),(1,0),(1,2),(2,1),(3,0),(3,2)]
+        self.assertEqual(expected_tiles, empty_tiles(initial_grid))
+
+    def test_change(self):
+
+        initial_grid = [
+            [2, None, 2, None],
+            [None, 2, None, 2],
+            [2, None, 2, None],
+            [None, 2, None, 2],
+        ]
+
+        expected_grid = [
+            [2, None, 2, None],
+            [None, 2, None, 2],
+            [2, None, 2, None],
+            [None, 2, None, 2],
+        ]
+        self.assertEqual(initial_grid, expected_grid)
+        
 if __name__ == '__main__':
     main()
