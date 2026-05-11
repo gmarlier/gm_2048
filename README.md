@@ -11,14 +11,6 @@ clone the remote repository on your local machine:
 git clone https://github.com/gmarlier/gm_2048.git
 
 Optional: create a virtual environment and activate it
-python -m venv .venv
-
-# Activate it (Linux/macOS)
-source .venv/bin/activate
-
-source .venv/bin/activate
-# Activate it (Windows PowerShell)
-.\.venv\Scripts\activate
 
 install python dependencies by running this command in the gm_2048 folder:
 pip install -r requirements
@@ -72,7 +64,7 @@ Expected message output in web mode:
 - ai best move suggestion: up, left, down or right
 
 ## Limit: 
-- the server does not manage multiple concurrent game sessions
+- the server (web moce) does not manage multiple concurrent game sessions
 - depth * size should be limited to 5 * 5 * 5 to avoid excessive computation
 
 
