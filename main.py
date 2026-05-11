@@ -17,39 +17,6 @@ MESSAGE_PROMPT = (
 )
 ERROR_KEYPRESSED = "Key pressed not accepted !"
 
-
-def run_with_keyboard_detection(exp: bool, grid: list[list[int]], ai_model: AbstractAI):
-    """Will detect keyboard event from player and trigger the next game output
-
-    Args:
-        exp: flag to detect if keyboard module event is enabled, it not, built-in input is used
-        grid: the current board state
-        ai_model: model
-    """
-    while True:
-        print(MESSAGE_PROMPT)
-        if exp:
-            try:
-                key_pressed = keyboard.read_key()
-                print("\n")
-            except ImportError:
-                logging.warning(
-                    "main should be launched with sudo, or do not use exp option"
-                )
-                sys.exit(0)
-        else:
-            key_pressed = input()
-        try:
-            action = Action(key_pressed)
-        except Exception:
-            print(ERROR_KEYPRESSED)
-        else:
-            grid, message = game_controller(action, grid, ai_model)
-            pprint(grid, message)
-            if message in [MESSAGE_WIN, MESSAGE_LOSE]:
-                sys.exit(0)
-
-
 if __name__ == "__main__":
 
     # Configure board size in command line
@@ -87,12 +54,6 @@ if __name__ == "__main__":
         help="maximum depth of best move search, default is 3",
     )
     parser.add_argument(
-        "-e",
-        "--exp",
-        action="store_true",
-        help="when enabled, move is detected directly without confirming (linux/windows supported, macOs experimental), default is disabled",
-    )
-    parser.add_argument(
         "--debug",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         default="INFO",
@@ -108,4 +69,14 @@ if __name__ == "__main__":
 
     grid, ai_model = game_init(args.rows, args.cols, args.init, args.depth)
     pprint(grid)
-    run_with_keyboard_detection(args.exp, grid, ai_model)
+    while True:
+        key_pressed = input(MESSAGE_PROMPT)
+        try:
+            action = Action(key_pressed)
+        except Exception:
+            print(ERROR_KEYPRESSED)
+        else:
+            grid, message = game_controller(action, grid, ai_model)
+            pprint(grid, message)
+            if message in [MESSAGE_WIN, MESSAGE_LOSE]:
+                sys.exit(0)
