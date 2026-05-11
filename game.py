@@ -165,8 +165,6 @@ def game_controller(
             best_move = ai_model.best_move(grid)
             return grid, best_move
 
-        # action = ai_model.best_move(grid)
-
         # Trigger end user move
         controllers = {
             Action.UP: up_move,
@@ -175,14 +173,15 @@ def game_controller(
             Action.LEFT: left_move,
         }
 
-        grid, _ = controllers[action](grid)
+        grid, changed = controllers[action](grid)
 
         # Next action user could spawn a 2048
         if player_win(grid):
             return grid, MESSAGE_WIN
 
-        # Otherwise, check if a tile can be spawn
-        grid = game_with_random_tile(grid)
+        # we select a new random tile if game is modified
+        if changed:
+            grid = game_with_random_tile(grid)
 
         # should be checked after spawning a new tile
         if player_lose(grid) is True:
