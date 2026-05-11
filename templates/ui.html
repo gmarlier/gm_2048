@@ -13,6 +13,7 @@
             height: 100vh;
             /* prend toute la hauteur */
             margin: 0;
+            font-family: "Segoe UI", "Helvetica Neue", Arial;
         }
 
         table {
@@ -32,7 +33,6 @@
 </head>
 
 <body>
-    <!-- Grille -->
     <table>
         {% for row in grid %}
         <tr>
@@ -50,10 +50,11 @@
 
     <!-- Pad directionnel -->
     <table>
+        <tr>Use button or numerical keypad (up=8, right=6, down=2, left=4, ai=5)</tr>
         <tr>
             <td></td>
             <td>
-                <form action="UP" method="post">
+                <form id="upForm" action="UP" method="post">
                     <button type="submit"
                         style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">↑</button>
                 </form>
@@ -62,19 +63,19 @@
         </tr>
         <tr>
             <td>
-                <form action="LEFT" method="post">
+                <form id="leftForm" action="LEFT" method="post">
                     <button type="submit"
                         style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">←</button>
                 </form>
             </td>
             <td>
-                <form action="AI" method="post">
+                <form id="aiForm" action="AI" method="post">
                     <button type="submit"
                         style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">AI</button>
                 </form>
             </td>
             <td>
-                <form action="RIGHT" method="post">
+                <form id="rightForm" action="RIGHT" method="post">
                     <button type="submit"
                         style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">→</button>
                 </form>
@@ -83,7 +84,7 @@
         <tr>
             <td></td>
             <td>
-                <form action="DOWN" method="post">
+                <form id="downForm" action="DOWN" method="post">
                     <button type="submit"
                         style="width:40px; height:40px; background-color:rgb(206, 168, 137); color:black;">↓</button>
                 </form>
@@ -102,6 +103,28 @@
             {% endif %}
         </h3>
     </div>
+
+    <script>
+        document.addEventListener("keydown", function (event) {
+            switch (event.key) {
+                case "8": // UP
+                    document.getElementById("upForm").submit();
+                    break;
+                case "2": // DOWN
+                    document.getElementById("downForm").submit();
+                    break;
+                case "4": // LEFT
+                    document.getElementById("leftForm").submit();
+                    break;
+                case "6": // RIGHT
+                    document.getElementById("rightForm").submit();
+                    break;
+                case "5": // AI
+                    document.getElementById("aiForm").submit();
+                    break;
+            }
+        });
+    </script>
 </body>
 
 </html>

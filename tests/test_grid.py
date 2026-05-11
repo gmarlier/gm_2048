@@ -83,6 +83,22 @@ class GridMoveTestCase(TestCase):
 
         self.assertEqual((expected_grid, True), left_move(initial_grid))
 
+        initial_grid = [
+            [2, 2, 2, 2],
+            [2, 4, 2, 4],
+            [2, 2, 4, 4],
+            [2, None, None, 2],
+        ]
+
+        expected_grid = [
+            [4, 4, None, None],
+            [2, 4, 2, 4],
+            [4, 8, None, None],
+            [4, None, None, None],
+        ]
+
+        self.assertEqual((expected_grid, True), left_move(initial_grid))
+
     def test_right_move(self):
 
         initial_grid = [
