@@ -41,6 +41,9 @@ Possible message output in command line:
 
 run the following command: python3 server.py
 
+help with launch options can be accessed with: python server.py --help
+(for exemple, option to change default port is available)
+
 a new game is launched in browser via: http://localhost:8000/NEW
 
 The game has 4 ui controllers:
