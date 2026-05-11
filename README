@@ -1,4 +1,6 @@
-Requirements:
+# 2048 Game
+
+## Requirements:
 
 Python version 3.12.*
 pip
@@ -21,9 +23,11 @@ source .venv/bin/activate
 install python dependencies by running this command in the gm_2048 folder:
 pip install -r requirements
 
+## Game modes
+
 The implementation provides 2 modes:
 
-1) command line mode:
+### command line mode:
 
 run the following command: python3 main.py
 
@@ -41,7 +45,7 @@ Possible message output in command line:
 - you lose !
 - ai best move suggestion: up, left, down or right
 
-2) web mode:
+### web mode:
 
 run the following command: python3 server.py
 
@@ -62,11 +66,13 @@ depth:the number of analyze depth used by ai agent to generate the best move (de
 
 Example: http://localhost:8000/NEW?row=4&col=4&init=2&depth=2
 
-Limit: 
-- the server does not manage multiple concurrent game sessions
-- depth * size should be limited to 5 * 5 * 5 to avoid excessive computation
-
-Possible message output in web mode:
+Expected message output in web mode:
 - you win !
 - you lose !
 - ai best move suggestion: up, left, down or right
+
+## Limit: 
+- the server does not manage multiple concurrent game sessions
+- depth * size should be limited to 5 * 5 * 5 to avoid excessive computation
+
+

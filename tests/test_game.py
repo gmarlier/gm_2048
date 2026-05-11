@@ -1,3 +1,7 @@
+"""
+Unit tests for game module
+"""
+
 import logging
 from math import inf
 from unittest import TestCase, main

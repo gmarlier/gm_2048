@@ -1,3 +1,7 @@
+"""
+Implementation of the command line mode of 2048 game
+"""
+
 import argparse
 import logging
 import sys

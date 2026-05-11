@@ -1,3 +1,7 @@
+"""
+Unit tests for basic row operation on the grid object
+"""
+
 from unittest import TestCase, main
 from grid import compress, merge
 

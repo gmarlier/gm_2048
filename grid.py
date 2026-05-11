@@ -25,6 +25,7 @@ from copy import deepcopy
 from enum import Enum
 import math
 from random import randint, sample
+from typing import Generator, Tuple
 
 
 class Action(Enum):
@@ -319,7 +320,9 @@ def cannot_change(grid: list[list[int]]) -> bool:
     return True
 
 
-def move_generator(board: list[list[int]]):
+def move_generator(
+    board: list[list[int]],
+) -> Generator[Tuple[list[list[int]], Action], None, None]:
     """a generator to iterate though all player moves. Used to hide move logic in the decision search algo
 
     Args:
@@ -342,7 +345,9 @@ def move_generator(board: list[list[int]]):
         yield tmp_board, action
 
 
-def spawn_generator(board: list[list[int]]):
+def spawn_generator(
+    board: list[list[int]],
+) -> Generator[Tuple[list[list[int]], int], None, None]:
     """a generator to iterate though all possible random state of a
        current board, while spawning a new tile with 2 possible values
        (with equi-probability). Used to hide spawning logic in the
@@ -382,6 +387,12 @@ def sum_square(grid: list[list[int]]) -> int:
 
 def fitness_snake(grid: list[list[int]]) -> int:
     """another fitness function using "snake line pattern" (http://tinyurl.com/l9bstk6)
+
+    the function will give a better score to snake line pattern in the board (corresponding
+    to a classic winning strategy) and will lower the score when the largest tile is not
+    in the lower left corner of the board.
+
+
 
     Args:
         board: the current board

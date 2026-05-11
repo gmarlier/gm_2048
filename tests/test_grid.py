@@ -1,3 +1,7 @@
+"""
+Unit tests for grid module
+"""
+
 import logging
 from unittest import TestCase, main
 from grid import (

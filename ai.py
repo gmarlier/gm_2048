@@ -11,7 +11,7 @@ Available classes:
 import math
 import logging
 from abc import abstractmethod
-from typing import Callable
+from typing import Callable, Generator, Tuple
 from grid import Action
 from random import choice
 
@@ -21,9 +21,9 @@ class AbstractAI:
 
     Public attributes:
     - max_depth: The maximum level to estimate a game configuration
-    - move_generator: an iterator over all states of possible player move
+    - move_generator: a generator yielding all states of possible player move
       for example: in 2048, it will provides 4 different board states for each move Up, Right, Down, Left
-    - spawn_generator: an interator over all states of random game event.
+    - spawn_generator: a generator yielding all states of random game event.
       for exemple: in 2048, it will generate the sequence of all board states for tiles spawn randomly
     - dead_end_function: function used to indicates a game configuration should not be explored further
     - fitness_function: function to assess the score of a game configuration
@@ -31,35 +31,63 @@ class AbstractAI:
 
     def __init__(
         self,
-        max_depth,
-        move_generator,
-        spawn_generator,
-        dead_end_function: Callable,
+        max_depth: int,
+        move_generator: Generator[Tuple[list[list[int]], Action], None, None],
+        spawn_generator: Generator[Tuple[list[list[int]], int], None, None],
+        gameover: Callable,
         fitness: Callable,
     ):
         self.max_depth = max_depth
         self.move_generator = move_generator
         self.spawn_generator = spawn_generator
-        self.endgame_condition = dead_end_function
+        self.endgame_condition = gameover
         self.fitness = fitness
 
     @abstractmethod
     def score_actions(self, board) -> dict[Action, float]:
+        """Any new implementationmodel of a ai class should implement this abstract method
+        that returns scores for authorized move
+
+        Args:
+            board: the current board state
+
+        Returns:
+            a map of score for all authorized moves
+
+        """
         raise NotImplementedError
 
     @abstractmethod
     def best_move(
         self,
-        board,
-        move_generator,
-        spawn_generator,
-        endgame_condition: Callable,
-        fitness: Callable,
+        board: list[list[int]],
     ) -> Action:
+        """Any new implementationmodel of a ai class should implement this abstract method
+        that returns the best move, ie maximazing the game score
+
+        Args:
+            board: the current board state
+
+        Returns:
+            best move
+
+        """
         raise NotImplementedError
 
-    def search(self, board, depth, is_player):
+    def search(self, board: list[list[int]], depth: int, is_player: bool):
+        """This method will determine resurvely all combinations
+        of a game by looking for the next player move (is player is True)
+        or the next tile to spawn on the board (is player if false)
 
+        Args:
+            board: the current board state
+            depth: the depth of current recursive search
+            is_player: to indicate if the search should scores player moves or random tiles
+
+        Returns:
+            best move
+
+        """
         indent = " " * ((self.max_depth - depth) * 3)
         if depth == 0 or (is_player and self.endgame_condition(board)):
             score = self.fitness(board)
@@ -96,10 +124,15 @@ class AbstractAI:
 
 
 class Expectimax(AbstractAI):
+    """Implementation of ai search algo. The algorithm use the generic search resursive implementation
+    of its parent class and select the best action and score
+
+    Public attributes: see parent class
+    """
 
     def __init__(
         self,
-        max_depth,
+        max_depth: int,
         move_generator,
         spawn_generator,
         endgame_condition: Callable,

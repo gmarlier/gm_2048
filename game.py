@@ -1,6 +1,11 @@
+"""
+Defines game workflow
+"""
+
 import logging
 from copy import deepcopy
 from random import choice
+from typing import Tuple
 
 from ai import AbstractAI, Expectimax
 from grid import (
@@ -60,19 +65,42 @@ def game_over(grid: list[list[int]]) -> bool:
     return player_win(grid) or player_lose(grid)
 
 
-def random_tile(tiles: list[tuple[int, int]]):
+def random_tile(tiles: list[tuple[int, int]]) -> Tuple[int, int]:
+    """select a random tile among the tiles board
+
+    Args:
+        grid: current game board
+
+    Returns:
+        return a random tile (row, col)
+    """
     return choice(tiles)
 
 
-def random_value(values: list[int]):
+def random_value(values: list[int]) -> int:
+    """select a random value from values list
+
+    Args:
+        values: possible values
+
+    Returns:
+        return a random number
+    """
     return choice(values)
 
 
 def game_with_random_tile(
     grid: list[list[int]], authorized_values: list[int] = [2, 4]
 ) -> list[list[int]]:
-    """
-    insert a new value in the grid
+    """Insert a new value in the grid. The method is stateless
+
+    Args:
+        grid: the current board
+        authorized_values: the value that can be selected randomly
+
+    Returns:
+        a new grid with the new random tile added
+
     """
     new_grid = deepcopy(grid)
     if tiles := empty_tiles(grid):
@@ -118,7 +146,8 @@ def game_controller(
     action: str, grid: list[list[int]], ai_model: AbstractAI = None
 ) -> tuple[list[list[int]], str]:
     """
-    this method defines the game workflow
+    this method defines the game workflow.
+    This controller is shared between 2 modes: command line and web modes
 
     Args:
         action: user action identifier
