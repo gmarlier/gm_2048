@@ -30,9 +30,7 @@ def run_with_keyboard_detection(exp: bool, grid: list[list[int]], ai_model: Abst
         print(MESSAGE_PROMPT)
         if exp:
             try:
-                event = keyboard.read_event()
-                if event.event_type == keyboard.KEY_DOWN and event.name.isdigit():
-                    key_pressed = event.name
+                key_pressed = keyboard.read_key()
                 print("\n")
             except ImportError:
                 logging.warning(
