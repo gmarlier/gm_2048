@@ -70,4 +70,18 @@ Expected message output in web mode:
 - the server (web moce) does not manage multiple concurrent game sessions
 - depth * size should be limited to 5 * 5 * 5 to avoid excessive computation
 
+## Development
+
+The project contains these components:
+
+- grid : manages low level board functions
+- ai   : manages game best move  logic
+- game : manages game worflow, win, lose and game over conditions
+- main : run the game in command line mode
+- server : run the game in web mode
+- requirements.txt : project dependencies
+- tests/ : folder for unit tests
+
+Units tests are included in the folder: tests
+Execute all unit tests with: python3 -m unitests discover tests
 

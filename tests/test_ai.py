@@ -11,7 +11,7 @@ from grid import (
     fitness_snake,
     left_move,
     move_generator,
-    print_pretty,
+    pprint,
     right_move,
     spawn_generator,
     sum_square,
@@ -198,52 +198,52 @@ class AITestCase(TestCase):
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.DOWN, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.DOWN, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.LEFT, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.UP, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.UP, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.UP, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.LEFT, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.DOWN, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.DOWN, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         best = self.ai_with_snake_fitness.best_move(board)
         self.assertEqual(Action.DOWN, self.ai_with_snake_fitness.best_move(board))
         board, message = self.controllers[best](board)
-        print_pretty(board, message)
+        pprint(board, message)
 
         self.assertEqual(expected_final, board)
 

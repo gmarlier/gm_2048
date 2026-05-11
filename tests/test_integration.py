@@ -11,7 +11,7 @@ from grid import (
     Action,
     fitness_snake,
     move_generator,
-    print_pretty,
+    pprint,
     spawn_generator,
 )
 from ai import Expectimax
@@ -106,20 +106,20 @@ class IntegrationAITest(TestCase):
         grid, ai_move = game_controller(Action.AI, grid, ai_model=self.ai_model)
         grid, message = game_controller(ai_move, grid, ai_model=self.ai_model)
         self.assertEqual(Action.LEFT, ai_move)
-        print_pretty(grid)
+        pprint(grid)
 
         # ----------------------- STEP 5
         grid, ai_move = game_controller(Action.AI, grid, ai_model=self.ai_model)
         grid, message = game_controller(ai_move, grid, ai_model=self.ai_model)
         self.assertEqual(Action.LEFT, ai_move)
-        print_pretty(grid)
+        pprint(grid)
 
         # ----------------------- FINAL STEP 5
         grid, ai_move = game_controller(Action.AI, grid, ai_model=self.ai_model)
         grid, message = game_controller(ai_move, grid, ai_model=self.ai_model)
         self.assertEqual(Action.DOWN, ai_move)
         self.assertEqual(MESSAGE_WIN, message)
-        print_pretty(grid)
+        pprint(grid)
 
         final_grid = [
             [None, None, None],

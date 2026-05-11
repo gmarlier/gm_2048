@@ -219,7 +219,7 @@ def merge(row: list[int]) -> list[int]:
     return new_row
 
 
-def print_pretty(grid: list[list[int]], message=None):
+def pprint(grid: list[list[int]], message=None):
     """user friendly representation of a board when the game is in command line
 
     Args:
