@@ -19,6 +19,13 @@ ERROR_KEYPRESSED = "Key pressed not accepted !"
 
 
 def run_with_keyboard_detection(exp: bool, grid: list[list[int]], ai_model: AbstractAI):
+    """Will detect keyboard event from player and trigger the next game output
+
+    Args:
+        exp: flag to detect if keyboard module event is enabled, it not, built-in input is used
+        grid: the current board state
+        ai_model: model
+    """
     while True:
         print(MESSAGE_PROMPT)
         if exp:
