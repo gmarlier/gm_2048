@@ -85,7 +85,7 @@ if __name__ == "__main__":
         "-e",
         "--exp",
         action="store_true",
-        help="the program will use direct event detection from keyboard (experimental), default is disable",
+        help="when enabled, move is detected directly without confirming (linux/windows supported, macOs experimental), default is disabled",
     )
     parser.add_argument(
         "--debug",
