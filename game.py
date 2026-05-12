@@ -25,6 +25,7 @@ from grid import Action
 
 MESSAGE_WIN = "You win !"
 MESSAGE_LOSE = "You lose !"
+MESSAGE_AI = "Move suggestion:"
 ERROR_GAME_CONTROLLER = "Error in game controller"
 
 
@@ -164,7 +165,7 @@ def game_controller(
         # User requesting AI Suggestion
         if action == Action.AI and ai_model:
             best_move = ai_model.best_move(grid)
-            return grid, best_move
+            return grid, f"{MESSAGE_AI} {best_move}"
 
         # Trigger end user move
         controllers = {

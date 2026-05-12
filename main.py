@@ -12,9 +12,7 @@ from game import MESSAGE_LOSE, MESSAGE_WIN, game_init, game_controller
 from grid import pprint
 from grid import Action
 
-MESSAGE_PROMPT = (
-    "Enter your next move on numerical keypad UP(8), RIGHT(6), DOWN(2), LEFT(4), AI(5) "
-)
+MESSAGE_PROMPT = "Enter your next move on numerical keypad UP(8), RIGHT(6), DOWN(2), LEFT(4), AI(5) ( + press Return)"
 ERROR_KEYPRESSED = "Key pressed not accepted !"
 
 if __name__ == "__main__":

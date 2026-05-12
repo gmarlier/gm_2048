@@ -47,11 +47,11 @@ help with launch options can be accessed with: python server.py --help
 a new game is launched in browser via: http://localhost:8000/NEW
 
 The game has 4 ui controllers:
-- left arrow button: move the board to the left
-- right arrow button: move the board to the right
-- up arrow button: move the board to the top
-- down arrow button: move the board to the bottom
-- center "AI" button: provide a best move suggestion
+- left arrow button or keypad '4': move the board to the left
+- right arrow button or keypad '6': move the board to the right
+- up arrow button or keypad '8': move the board to the top
+- down arrow button or keypad '2': move the board to the bottom
+- center "AI" button or keypad '5': provide a best move suggestion
 
 Some parameters can be specified in launch url
 row:  number of rows in the new board (default is 5)
@@ -69,6 +69,15 @@ Expected message output in web mode:
 ## Limit: 
 - the server (web moce) does not manage multiple concurrent game sessions
 - depth * size should be limited to 5 * 5 * 5 to avoid excessive computation
+
+## AI module
+
+The ai module is using a brute force approach by exploring all possible combination of
+the game with a limit specified by the depth parameter. Two move estimation funtions (fitness functions)
+are provided in the grid module: a very basic one (sum_square) calculating the square sum of all tile values
+and a more advanced one (fitness_snake) giving more weight to the the tiles that replicate a "snake" pattern
+of tile combination.
+
 
 ## Development
 
