@@ -20,7 +20,7 @@ TEMPLATE_NAME = "ui.html"
 
 
 @app.get("/NEW", response_class=HTMLResponse, include_in_schema=False)
-def new_game(request: Request, row=4, col=4, init=2, depth=3):
+def new_game(request: Request, row=4, col=4, init=2, depth=4):
     """Web controller to bootstrap a new game. Example: http://localhost:8000/NEW
 
     Args:

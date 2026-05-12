@@ -115,7 +115,7 @@ def game_with_random_tile(
 
 def game_init(
     rows: int, cols: int, init: int, depth: int
-) -> tuple[list[list[int]], dict[Action:callable], AbstractAI]:
+) -> tuple[list[list[int]], AbstractAI]:
     """initialize game with few parameters: board size, random initial number
         or maximum depth of ai search
 
@@ -123,9 +123,10 @@ def game_init(
         rows: number of rows of game board
         cols: number of columns of game board
         init: number used to initialize a random board
+        depth: maximum depth used to explore game combination
 
     Returns:
-        True if the current game is over, False otherwise
+        un tuple of new board and instance of ai model
     """
     grid = random_grid(rows, cols, init)
 
