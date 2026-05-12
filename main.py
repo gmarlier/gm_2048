@@ -2,12 +2,10 @@
 Implementation of the command line mode of 2048 game
 """
 
-import keyboard
 import argparse
 import logging
 import sys
 
-from ai import AbstractAI
 from game import MESSAGE_LOSE, MESSAGE_WIN, game_init, game_controller
 from grid import pprint
 from grid import Action
