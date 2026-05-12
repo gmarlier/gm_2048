@@ -72,10 +72,10 @@ Expected message output in web mode:
 
 ## AI module
 
-The ai module is using a brute force approach by exploring all possible combination of
-the game with a limit specified by the depth parameter. Two move estimation funtions (fitness functions)
-are provided in the grid module: a very basic one (sum_square) calculating the square sum of all tile values
-and a more advanced one (fitness_snake) giving more weight to the the tiles that replicate a "snake" pattern
+The ai module is using a brute force approach by exploring all possible combinations of
+the game with a limit specified by the depth parameter. Two move estimation functions (fitness functions)
+are provided in the grid module: a very basic one (sum_square), calculating the square sum of all tile values
+and a more advanced one (fitness_snake) giving more weight to the tiles that replicate a "snake" pattern
 of tile combination.
 
 
